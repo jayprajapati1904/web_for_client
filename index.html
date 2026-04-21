@@ -2,952 +2,1028 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!DOCTYPE html>
-  <html lang="en">
-
-  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Paolo Mampusti - Video Editor</title>
     <link rel="icon" type="image/png" href="image/logo.png">
     <meta name="description"
-      content="Professional video editor specializing in commercials, social media campaigns, and cinematic edits. View my portfolio and get in touch for collaborations.">
+        content="Professional video editor specializing in commercials, social media campaigns, and cinematic edits. View my portfolio and get in touch for collaborations.">
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Manrope:wght@400;500;700;800&display=swap"
-      rel="stylesheet">
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Manrope:wght@400;500;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-      :root {
-        --bg: #07080c;
-        --bg-soft: #0f1218;
-        --panel: rgba(255, 255, 255, 0.05);
-        --panel-strong: rgba(255, 255, 255, 0.08);
-        --text: #f4f4f7;
-        --muted: #b6bcc9;
-        --accent: #ff9a3d;
-        --accent-2: #ff6f3c;
-        --line: rgba(255, 255, 255, 0.08);
-        --shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        scroll-behavior: smooth;
-      }
-
-      html,
-      body {
-        min-height: 100%;
-        overflow-x: hidden;
-        background:
-          radial-gradient(circle at top left, rgba(255, 154, 61, 0.15), transparent 28%),
-          radial-gradient(circle at bottom right, rgba(255, 111, 60, 0.1), transparent 24%),
-          var(--bg);
-        color: var(--text);
-        font-family: 'Manrope', sans-serif;
-        line-height: 1.6;
-      }
-
-      body::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        background-image: linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-        background-size: 64px 64px;
-        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.75), transparent 90%);
-        opacity: 0.35;
-        z-index: -1;
-      }
-
-      h1,
-      h2,
-      h3 {
-        font-family: 'Playfair Display', serif;
-        line-height: 1.1;
-      }
-
-      a {
-        color: inherit;
-      }
-
-      .container {
-        width: min(1180px, calc(100% - 2rem));
-        margin: 0 auto;
-      }
-
-      .section {
-        padding: 5.5rem 0;
-      }
-
-      .section-title {
-        text-align: center;
-        max-width: 760px;
-        margin: 0 auto 2.25rem;
-      }
-
-      .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.45rem 0.9rem;
-        border: 1px solid rgba(255, 154, 61, 0.2);
-        border-radius: 999px;
-        color: var(--accent);
-        background: rgba(255, 154, 61, 0.08);
-        font-size: 0.85rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        margin-bottom: 1rem;
-      }
-
-      .section-title h2 {
-        font-size: clamp(2rem, 4vw, 3rem);
-        margin-bottom: 0.75rem;
-      }
-
-      .section-title p {
-        color: var(--muted);
-        max-width: 62ch;
-        margin: 0 auto;
-      }
-
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.7rem;
-        padding: 0.95rem 1.4rem;
-        border-radius: 999px;
-        border: 1px solid transparent;
-        font-weight: 800;
-        text-decoration: none;
-        transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-        box-shadow: 0 12px 30px rgba(255, 154, 61, 0.18);
-      }
-
-      .btn-primary {
-        color: #1c110a;
-        background: linear-gradient(135deg, var(--accent), #ffc177);
-      }
-
-      .btn-secondary {
-        color: var(--text);
-        background: rgba(255, 255, 255, 0.03);
-        border-color: rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(10px);
-      }
-
-      .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 16px 34px rgba(255, 154, 61, 0.24);
-      }
-
-      header {
-        position: fixed;
-        inset: 0 0 auto 0;
-        z-index: 1000;
-        background: rgba(6, 8, 12, 0.76);
-        backdrop-filter: blur(18px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      }
-
-      nav {
-        width: min(1180px, calc(100% - 2rem));
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 1rem 0;
-        gap: 1rem;
-      }
-
-      .logo {
-        display: flex;
-        align-items: center;
-        gap: 0.85rem;
-        font-weight: 800;
-        letter-spacing: 0.02em;
-        min-width: 0;
-      }
-
-      .logo img {
-        width: 42px;
-        height: 42px;
-        object-fit: cover;
-        border-radius: 50%;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        box-shadow: 0 0 0 4px rgba(255, 154, 61, 0.08);
-        flex: 0 0 auto;
-      }
-
-      .logo span {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      .nav-links {
-        list-style: none;
-        display: flex;
-        align-items: center;
-        gap: 1.6rem;
-      }
-
-      .nav-links a {
-        position: relative;
-        text-decoration: none;
-        color: var(--muted);
-        font-weight: 600;
-        transition: color 0.2s ease;
-      }
-
-      .nav-links a::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: -0.35rem;
-        width: 0;
-        height: 2px;
-        border-radius: 999px;
-        background: linear-gradient(90deg, var(--accent), var(--accent-2));
-        transition: width 0.25s ease;
-      }
-
-      .nav-links a:hover {
-        color: var(--text);
-      }
-
-      .nav-links a:hover::after {
-        width: 100%;
-      }
-
-      .hamburger {
-        display: none;
-        flex-direction: column;
-        gap: 4px;
-        cursor: pointer;
-        background: transparent;
-        border: 0;
-        padding: 0.35rem;
-      }
-
-      .hamburger span {
-        width: 26px;
-        height: 3px;
-        border-radius: 999px;
-        background: var(--text);
-        transition: transform 0.25s ease, opacity 0.25s ease;
-      }
-
-      .hero {
-        position: relative;
-        min-height: 100vh;
-        padding: 7.5rem 0 4.5rem;
-        display: flex;
-        align-items: center;
-        overflow: hidden;
-        background:
-          linear-gradient(135deg, rgba(7, 8, 12, 0.95), rgba(7, 8, 12, 0.86)),
-          url('https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=1600&q=80') center/cover;
-      }
-
-      .hero::after {
-        content: '';
-        position: absolute;
-        inset: auto -10% -25% auto;
-        width: 36rem;
-        height: 36rem;
-        background: radial-gradient(circle, rgba(255, 154, 61, 0.18), transparent 65%);
-        pointer-events: none;
-      }
-
-      .hero-grid {
-        position: relative;
-        z-index: 1;
-        display: grid;
-        grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
-        align-items: center;
-        gap: 2.5rem;
-      }
-
-      .hero-card {
-        padding: 1rem;
-        border-radius: 28px;
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(14px);
-        box-shadow: var(--shadow);
-      }
-
-      .hero-image {
-        width: 100%;
-        aspect-ratio: 1 / 1;
-        border-radius: 24px;
-        object-fit: cover;
-        display: block;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      .hero-copy {
-        max-width: 42rem;
-        animation: fadeUp 0.9s ease both;
-      }
-
-      .hero-copy h1 {
-        font-size: clamp(2.6rem, 6vw, 4.8rem);
-        margin-bottom: 1rem;
-        letter-spacing: -0.03em;
-      }
-
-      .hero-copy h1 span {
-        color: var(--accent);
-        text-shadow: 0 0 26px rgba(255, 154, 61, 0.3);
-      }
-
-      .hero-copy p {
-        color: var(--muted);
-        font-size: 1.05rem;
-        max-width: 58ch;
-      }
-
-      .hero-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.9rem;
-        margin-top: 1.8rem;
-      }
-
-      .hero-metrics {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 1rem;
-        margin-top: 2rem;
-      }
-
-      .metric {
-        padding: 1rem;
-        border-radius: 18px;
-        background: var(--panel);
-        border: 1px solid var(--line);
-      }
-
-      .metric strong {
-        display: block;
-        font-size: 1.2rem;
-        margin-bottom: 0.25rem;
-      }
-
-      .metric span {
-        color: var(--muted);
-        font-size: 0.92rem;
-      }
-
-      .services {
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.015), rgba(255, 255, 255, 0));
-      }
-
-      .services-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 1.2rem;
-      }
-
-      .service-card,
-      .process-card,
-      .about-panel,
-      .portfolio-card,
-      .contact-panel {
-        border-radius: 24px;
-        background: var(--panel);
-        border: 1px solid var(--line);
-        box-shadow: var(--shadow);
-        backdrop-filter: blur(14px);
-      }
-
-      .service-card {
-        padding: 1.4rem;
-        min-height: 190px;
-        display: flex;
-        flex-direction: column;
-        gap: 0.9rem;
-      }
-
-      .service-card i {
-        width: 48px;
-        height: 48px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 14px;
-        background: rgba(255, 154, 61, 0.12);
-        color: var(--accent);
-        font-size: 1.15rem;
-      }
-
-      .service-card p,
-      .process-card p,
-      .about-copy p,
-      .contact-copy p {
-        color: var(--muted);
-      }
-
-      .about-grid {
-        display: grid;
-        grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
-        gap: 2rem;
-        align-items: center;
-      }
-
-      .about-photo {
-        width: 100%;
-        border-radius: 24px;
-        object-fit: cover;
-        aspect-ratio: 4 / 5;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-      }
-
-      .about-panel {
-        padding: 1.5rem;
-      }
-
-      .about-copy h3 {
-        font-size: clamp(1.8rem, 3vw, 2.6rem);
-        margin-bottom: 1rem;
-      }
-
-      .tool-list {
-        list-style: none;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 0.8rem;
-        margin-top: 1.4rem;
-      }
-
-      .tool-list li {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.7rem;
-        padding: 0.8rem 0.9rem;
-        border-radius: 14px;
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        color: var(--text);
-        font-weight: 600;
-      }
-
-      .tool-list img {
-        width: 24px;
-        height: 24px;
-        object-fit: contain;
-        border-radius: 6px;
-      }
-
-      .process-grid {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 1.2rem;
-      }
-
-      .process-card {
-        padding: 1.4rem;
-      }
-
-      .process-step {
-        width: 42px;
-        height: 42px;
-        border-radius: 999px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1rem;
-        font-weight: 800;
-        color: #1c110a;
-        background: linear-gradient(135deg, var(--accent), #ffc177);
-      }
-
-      .portfolio-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 1rem;
-      }
-
-      .portfolio-card {
-        overflow: hidden;
-        aspect-ratio: 9 / 16;
-        position: relative;
-        min-height: 360px;
-      }
-
-      .portfolio-card iframe {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        border: 0;
-      }
-
-      .contact-layout {
-        display: grid;
-        grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
-        gap: 1.4rem;
-        align-items: start;
-      }
-
-      .contact-panel {
-        padding: 1.5rem;
-      }
-
-      .contact-copy h2 {
-        font-size: clamp(2rem, 4vw, 3rem);
-        margin-bottom: 0.75rem;
-      }
-
-      form {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-      }
-
-      input,
-      textarea {
-        width: 100%;
-        padding: 1rem 1.05rem;
-        border-radius: 14px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background: rgba(255, 255, 255, 0.04);
-        color: var(--text);
-        font: inherit;
-      }
-
-      input::placeholder,
-      textarea::placeholder {
-        color: rgba(182, 188, 201, 0.75);
-      }
-
-      input:focus,
-      textarea:focus {
-        outline: none;
-        border-color: rgba(255, 154, 61, 0.5);
-        box-shadow: 0 0 0 3px rgba(255, 154, 61, 0.14);
-      }
-
-      textarea {
-        min-height: 150px;
-        resize: vertical;
-      }
-
-      .social-links {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-top: 1.3rem;
-        flex-wrap: wrap;
-      }
-
-      .social-links a {
-        width: 46px;
-        height: 46px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 14px;
-        text-decoration: none;
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        color: var(--text);
-        transition: transform 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-      }
-
-      .social-links a:hover {
-        transform: translateY(-2px);
-        color: var(--accent);
-        border-color: rgba(255, 154, 61, 0.35);
-      }
-
-      footer {
-        padding: 1.4rem 0 2rem;
-        text-align: center;
-        color: var(--muted);
-        border-top: 1px solid rgba(255, 255, 255, 0.06);
-        background: rgba(0, 0, 0, 0.2);
-      }
-
-      .fade-up {
-        animation: fadeUp 0.9s ease both;
-      }
-
-      @keyframes fadeUp {
-        from {
-          opacity: 0;
-          transform: translateY(18px);
+        :root {
+            --bg: #07080c;
+            --panel: rgba(255, 255, 255, 0.05);
+            --line: rgba(255, 255, 255, 0.08);
+            --text: #f4f4f7;
+            --muted: #b6bcc9;
+            --accent: #ff9a3d;
+            --accent-2: #ff6f3c;
+            --shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
         }
 
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @media (max-width: 960px) {
-
-        .hero-grid,
-        .about-grid,
-        .contact-layout {
-          grid-template-columns: 1fr;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
         }
 
-        .services-grid,
-        .process-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
+        html,
+        body {
+            min-height: 100%;
+            overflow-x: hidden;
+            background:
+                radial-gradient(circle at top left, rgba(255, 154, 61, 0.14), transparent 28%),
+                radial-gradient(circle at bottom right, rgba(255, 111, 60, 0.1), transparent 24%),
+                var(--bg);
+            color: var(--text);
+            font-family: 'Manrope', sans-serif;
+            line-height: 1.6;
         }
 
-        .hero {
-          padding-top: 6.8rem;
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+            background-size: 64px 64px;
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.75), transparent 90%);
+            opacity: 0.35;
+            z-index: -1;
         }
-      }
 
-      @media (max-width: 768px) {
-        .hamburger {
-          display: inline-flex;
+        h1,
+        h2,
+        h3 {
+            font-family: 'Playfair Display', serif;
+            line-height: 1.1;
+        }
+
+        .container {
+            width: min(1180px, calc(100% - 2rem));
+            margin: 0 auto;
+        }
+
+        .section {
+            padding: 5.5rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            max-width: 760px;
+            margin: 0 auto 2.25rem;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.45rem 0.9rem;
+            border: 1px solid rgba(255, 154, 61, 0.2);
+            border-radius: 999px;
+            color: var(--accent);
+            background: rgba(255, 154, 61, 0.08);
+            font-size: 0.85rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .section-title h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title p {
+            color: var(--muted);
+            max-width: 62ch;
+            margin: 0 auto;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem;
+            padding: 0.95rem 1.4rem;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            font-weight: 800;
+            text-decoration: none;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+            box-shadow: 0 12px 30px rgba(255, 154, 61, 0.18);
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            color: #1c110a;
+            background: linear-gradient(135deg, var(--accent), #ffc177);
+        }
+
+        .btn-secondary {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 34px rgba(255, 154, 61, 0.24);
+        }
+
+        header {
+            position: fixed;
+            inset: 0 0 auto 0;
+            z-index: 1000;
+            background: rgba(6, 8, 12, 0.76);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        nav {
+            width: min(1180px, calc(100% - 2rem));
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            font-weight: 800;
+            min-width: 0;
+        }
+
+        .logo img {
+            width: 42px;
+            height: 42px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 0 4px rgba(255, 154, 61, 0.08);
+            flex: 0 0 auto;
+        }
+
+        .logo span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .nav-links {
-          position: fixed;
-          top: 72px;
-          right: 1rem;
-          left: 1rem;
-          padding: 1rem;
-          flex-direction: column;
-          align-items: stretch;
-          gap: 0.7rem;
-          background: rgba(8, 10, 15, 0.96);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          border-radius: 22px;
-          box-shadow: var(--shadow);
-          transform: translateY(-10px);
-          opacity: 0;
-          pointer-events: none;
-          transition: opacity 0.25s ease, transform 0.25s ease;
-        }
-
-        .nav-links.active {
-          opacity: 1;
-          transform: translateY(0);
-          pointer-events: auto;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 1.6rem;
         }
 
         .nav-links a {
-          display: block;
-          padding: 0.55rem 0.15rem;
+            position: relative;
+            text-decoration: none;
+            color: var(--muted);
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -0.35rem;
+            width: 0;
+            height: 2px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            transition: width 0.25s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            background: transparent;
+            border: 0;
+            padding: 0.35rem;
+        }
+
+        .hamburger span {
+            width: 26px;
+            height: 3px;
+            border-radius: 999px;
+            background: var(--text);
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            padding: 7.5rem 0 4.5rem;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            background:
+                linear-gradient(135deg, rgba(7, 8, 12, 0.95), rgba(7, 8, 12, 0.86)),
+                url('https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=1600&q=80') center/cover;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: auto -10% -25% auto;
+            width: 36rem;
+            height: 36rem;
+            background: radial-gradient(circle, rgba(255, 154, 61, 0.18), transparent 65%);
+            pointer-events: none;
+        }
+
+        .hero-grid {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        .hero-card,
+        .service-card,
+        .process-card,
+        .about-panel,
+        .portfolio-card,
+        .contact-panel,
+        .testimonial-card,
+        .cta-panel {
+            border-radius: 24px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(14px);
+        }
+
+        .hero-card {
+            padding: 1rem;
+            border-radius: 28px;
+        }
+
+        .hero-image,
+        .about-photo {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-image {
+            aspect-ratio: 1 / 1;
+            border-radius: 24px;
+        }
+
+        .hero-copy {
+            max-width: 42rem;
+            animation: fadeUp 0.9s ease both;
         }
 
         .hero-copy h1 {
-          font-size: clamp(2.2rem, 11vw, 3.5rem);
+            font-size: clamp(2.6rem, 6vw, 4.8rem);
+            margin-bottom: 1rem;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-copy h1 span {
+            color: var(--accent);
+            text-shadow: 0 0 26px rgba(255, 154, 61, 0.3);
+        }
+
+        .hero-copy p {
+            color: var(--muted);
+            font-size: 1.05rem;
+            max-width: 58ch;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.9rem;
+            margin-top: 1.8rem;
         }
 
         .hero-metrics,
         .services-grid,
+        .process-grid,
+        .testimonial-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .hero-metrics {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            margin-top: 2rem;
+        }
+
+        .metric {
+            padding: 1rem;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .metric strong {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric span {
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .services {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.015), rgba(255, 255, 255, 0));
+        }
+
+        .services-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .service-card,
+        .process-card,
+        .testimonial-card,
+        .cta-panel {
+            padding: 1.4rem;
+        }
+
+        .service-card {
+            min-height: 190px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+
+        .service-card i {
+            width: 48px;
+            height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            background: rgba(255, 154, 61, 0.12);
+            color: var(--accent);
+            font-size: 1.15rem;
+        }
+
+        .service-card p,
+        .process-card p,
+        .about-copy p,
+        .contact-copy p,
+        .testimonial-card p,
+        .cta-panel p {
+            color: var(--muted);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .about-photo {
+            border-radius: 24px;
+            aspect-ratio: 4 / 5;
+        }
+
+        .about-panel {
+            padding: 1.5rem;
+        }
+
+        .about-copy h3 {
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            margin-bottom: 1rem;
+        }
+
+        .tool-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.8rem;
+            margin-top: 1.4rem;
+        }
+
+        .tool-list li {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem;
+            padding: 0.8rem 0.9rem;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .tool-list img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            border-radius: 6px;
+        }
+
         .process-grid {
-          grid-template-columns: 1fr;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
         }
 
-        .hero-actions {
-          flex-direction: column;
+        .process-step {
+            width: 42px;
+            height: 42px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            color: #1c110a;
+            background: linear-gradient(135deg, var(--accent), #ffc177);
         }
 
-        .hero-actions .btn {
-          width: 100%;
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
         }
-      }
+
+        .portfolio-card {
+            overflow: hidden;
+            aspect-ratio: 9 / 16;
+            position: relative;
+            min-height: 360px;
+        }
+
+        .portfolio-card iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .testimonial-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .testimonial-card {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .testimonial-card .quote {
+            color: var(--accent);
+            font-size: 1.3rem;
+        }
+
+        .testimonial-card .name {
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .testimonial-card .role {
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .cta-panel {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .cta-panel h2 {
+            font-size: clamp(1.8rem, 4vw, 2.7rem);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+            gap: 1.4rem;
+            align-items: start;
+        }
+
+        .contact-panel {
+            padding: 1.5rem;
+        }
+
+        .contact-copy h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 0.75rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 1rem 1.05rem;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text);
+            font: inherit;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: rgba(182, 188, 201, 0.75);
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: rgba(255, 154, 61, 0.5);
+            box-shadow: 0 0 0 3px rgba(255, 154, 61, 0.14);
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .social-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1.3rem;
+            flex-wrap: wrap;
+        }
+
+        .social-links a {
+            width: 46px;
+            height: 46px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--text);
+            transition: transform 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-2px);
+            color: var(--accent);
+            border-color: rgba(255, 154, 61, 0.35);
+        }
+
+        footer {
+            padding: 1.4rem 0 2rem;
+            text-align: center;
+            color: var(--muted);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .fade-up {
+            animation: fadeUp 0.9s ease both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 960px) {
+
+            .hero-grid,
+            .about-grid,
+            .contact-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .services-grid,
+            .process-grid,
+            .testimonial-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .hero {
+                padding-top: 6.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: inline-flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 72px;
+                right: 1rem;
+                left: 1rem;
+                padding: 1rem;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.7rem;
+                background: rgba(8, 10, 15, 0.96);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 22px;
+                box-shadow: var(--shadow);
+                transform: translateY(-10px);
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.25s ease, transform 0.25s ease;
+            }
+
+            .nav-links.active {
+                opacity: 1;
+                transform: translateY(0);
+                pointer-events: auto;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 0.55rem 0.15rem;
+            }
+
+            .hero-copy h1 {
+                font-size: clamp(2.2rem, 11vw, 3.5rem);
+            }
+
+            .hero-metrics,
+            .services-grid,
+            .process-grid,
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-actions,
+            .cta-panel {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .hero-actions .btn,
+            .cta-panel .btn {
+                width: 100%;
+            }
+        }
     </style>
-  </head>
+</head>
 
 <body>
-  <header>
-    <nav>
-      <div class="logo">
-        <img src="image/logo2.png" alt="Logo">
-        <span>Jose Maria Paolo Mampusti</span>
-      </div>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#portfolio">Showreels</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-      <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </nav>
-  </header>
-
-  <main>
-    <section id="home" class="hero">
-      <div class="container hero-grid">
-        <div class="hero-card fade-up" style="animation-delay: 0.1s;">
-          <img src="image/paopic.png" alt="Paolo Mampusti" class="hero-image">
-        </div>
-
-        <div class="hero-copy fade-up" style="animation-delay: 0.2s;">
-          <div class="eyebrow"><i class="fa-solid fa-circle-play"></i> Dark cut, clean motion, strong hooks</div>
-          <h1>Hi, I’m <span>Jose Maria Paolo Mampusti</span></h1>
-          <p>
-            I create high-impact social edits, short-form reels, and promo videos that feel sharp,
-            modern, and built to keep attention. My style mixes clean pacing, bold transitions, and a cinematic dark
-            look.
-          </p>
-          <div class="hero-actions">
-            <a href="#portfolio" class="btn btn-primary">View Work</a>
-            <a href="#contact" class="btn btn-secondary">Let’s Talk</a>
-          </div>
-
-          <div class="hero-metrics">
-            <div class="metric">
-              <strong>Short-form</strong>
-              <span>Reels, TikTok, Shorts</span>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="image/logo2.png" alt="Logo">
+                <span>Jose Maria Paolo Mampusti</span>
             </div>
-            <div class="metric">
-              <strong>Fast Turnaround</strong>
-              <span>Efficient editing workflow</span>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#portfolio">Showreels</a></li>
+                <li><a href="#testimonials">Reviews</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container hero-grid">
+                <div class="hero-card fade-up" style="animation-delay: 0.1s;">
+                    <img src="image/paopic.png" alt="Paolo Mampusti" class="hero-image">
+                </div>
+
+                <div class="hero-copy fade-up" style="animation-delay: 0.2s;">
+                    <div class="eyebrow"><i class="fa-solid fa-circle-play"></i> Dark cut, clean motion, strong hooks
+                    </div>
+                    <h1>Hi, I’m <span>Jose Maria Paolo Mampusti</span></h1>
+                    <p>
+                        I create high-impact social edits, short-form reels, and promo videos that feel sharp,
+                        modern, and built to keep attention. My style mixes clean pacing, bold transitions, and a
+                        cinematic dark look.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="#portfolio" class="btn btn-primary">View Work</a>
+                        <a href="#contact" class="btn btn-secondary">Let’s Talk</a>
+                    </div>
+
+                    <div class="hero-metrics">
+                        <div class="metric">
+                            <strong>Short-form</strong>
+                            <span>Reels, TikTok, Shorts</span>
+                        </div>
+                        <div class="metric">
+                            <strong>Fast Turnaround</strong>
+                            <span>Efficient editing workflow</span>
+                        </div>
+                        <div class="metric">
+                            <strong>Engaging Style</strong>
+                            <span>Built for retention</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="metric">
-              <strong>Engaging Style</strong>
-              <span>Built for retention</span>
+        </section>
+
+        <section id="services" class="section services">
+            <div class="container">
+                <div class="section-title">
+                    <div class="eyebrow"><i class="fa-solid fa-wand-magic-sparkles"></i> What I do</div>
+                    <h2>Built for social-first content</h2>
+                    <p>
+                        A tighter layout with a stronger dark palette and a few added sections so the page feels more
+                        complete.
+                    </p>
+                </div>
+
+                <div class="services-grid">
+                    <article class="service-card fade-up" style="animation-delay: 0.05s;">
+                        <i class="fa-solid fa-clapperboard"></i>
+                        <h3>Reels & Shorts</h3>
+                        <p>Fast-paced edits designed to stop the scroll and keep the pacing tight from the first second.
+                        </p>
+                    </article>
+                    <article class="service-card fade-up" style="animation-delay: 0.1s;">
+                        <i class="fa-solid fa-bolt"></i>
+                        <h3>Promo Videos</h3>
+                        <p>Clean commercial cuts with motion, rhythm, and a polished dark aesthetic for brands and
+                            creators.</p>
+                    </article>
+                    <article class="service-card fade-up" style="animation-delay: 0.15s;">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <h3>Creative Design Support</h3>
+                        <p>Supporting assets, text styling, and visual polish when the edit needs a stronger overall
+                            look.</p>
+                    </article>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
+        </section>
 
-    <section id="services" class="section services">
-      <div class="container">
-        <div class="section-title">
-          <div class="eyebrow"><i class="fa-solid fa-wand-magic-sparkles"></i> What I do</div>
-          <h2>Built for social-first content</h2>
-          <p>
-            A tighter layout with a stronger dark palette and a few added sections so the page feels more complete.
-          </p>
-        </div>
+        <section id="about" class="section">
+            <div class="container about-grid">
+                <img src="image/taena.png" alt="Profile" class="about-photo fade-up" style="animation-delay: 0.05s;">
 
-        <div class="services-grid">
-          <article class="service-card fade-up" style="animation-delay: 0.05s;">
-            <i class="fa-solid fa-clapperboard"></i>
-            <h3>Reels & Shorts</h3>
-            <p>Fast-paced edits designed to stop the scroll and keep the pacing tight from the first second.</p>
-          </article>
-          <article class="service-card fade-up" style="animation-delay: 0.1s;">
-            <i class="fa-solid fa-bolt"></i>
-            <h3>Promo Videos</h3>
-            <p>Clean commercial cuts with motion, rhythm, and a polished dark aesthetic for brands and creators.</p>
-          </article>
-          <article class="service-card fade-up" style="animation-delay: 0.15s;">
-            <i class="fa-solid fa-layer-group"></i>
-            <h3>Creative Design Support</h3>
-            <p>Supporting assets, text styling, and visual polish when the edit needs a stronger overall look.</p>
-          </article>
-        </div>
-      </div>
-    </section>
+                <div class="about-panel about-copy fade-up" style="animation-delay: 0.1s;">
+                    <div class="eyebrow"><i class="fa-solid fa-user-astronaut"></i> About me</div>
+                    <h3>I turn ordinary clips into sharper, story-driven edits.</h3>
+                    <p>
+                        I’m a video editor from the Philippines focused on making content feel premium, expressive,
+                        and easy to watch. I work best on reels and social content where timing, rhythm, and style
+                        matter most.
+                        The goal is simple: keep viewers watching and make every frame feel intentional.
+                    </p>
+                    <p style="margin-top: 1rem;">
+                        I like a dark, modern look with warm accent lighting, so the page still feels cinematic but
+                        different enough from the original.
+                    </p>
 
-    <section id="about" class="section">
-      <div class="container about-grid">
-        <img src="image/taena.png" alt="Profile" class="about-photo fade-up" style="animation-delay: 0.05s;">
+                    <ul class="tool-list">
+                        <li><img src="image/capcut.jpg" alt="CapCut"> CapCut</li>
+                        <li><img src="image/photoshop.png" alt="Photoshop"> Photoshop</li>
+                        <li><img src="image/canva.jpg" alt="Canva"> Canva</li>
+                        <li><img src="image/jitter.png" alt="Jitter"> Jitter</li>
+                        <li><img src="image/pexels.png" alt="Pexels"> Pexels</li>
+                        <li><img src="image/pixabay.png" alt="Pixabay"> Pixabay</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
 
-        <div class="about-panel about-copy fade-up" style="animation-delay: 0.1s;">
-          <div class="eyebrow"><i class="fa-solid fa-user-astronaut"></i> About me</div>
-          <h3>I turn ordinary clips into sharper, story-driven edits.</h3>
-          <p>
-            I’m a video editor from the Philippines focused on making content feel premium, expressive,
-            and easy to watch. I work best on reels and social content where timing, rhythm, and style matter most.
-            The goal is simple: keep viewers watching and make every frame feel intentional.
-          </p>
-          <p style="margin-top: 1rem;">
-            I like a dark, modern look with warm accent lighting, so the page still feels cinematic but different enough
-            from the original.
-          </p>
+        <section class="section">
+            <div class="container">
+                <div class="section-title">
+                    <div class="eyebrow"><i class="fa-solid fa-diagram-project"></i> Workflow</div>
+                    <h2>Simple process, cleaner result</h2>
+                    <p>A small added section to make the page feel fuller and more structured without becoming busy.</p>
+                </div>
 
-          <ul class="tool-list">
-            <li><img src="image/capcut.jpg" alt="CapCut"> CapCut</li>
-            <li><img src="image/photoshop.png" alt="Photoshop"> Photoshop</li>
-            <li><img src="image/canva.jpg" alt="Canva"> Canva</li>
-            <li><img src="image/jitter.png" alt="Jitter"> Jitter</li>
-            <li><img src="image/pexels.png" alt="Pexels"> Pexels</li>
-            <li><img src="image/pixabay.png" alt="Pixabay"> Pixabay</li>
-          </ul>
-        </div>
-      </div>
-    </section>
+                <div class="process-grid">
+                    <article class="process-card fade-up" style="animation-delay: 0.05s;">
+                        <div class="process-step">01</div>
+                        <h3>Brief</h3>
+                        <p>We define the goal, tone, and pacing before the edit starts.</p>
+                    </article>
+                    <article class="process-card fade-up" style="animation-delay: 0.1s;">
+                        <div class="process-step">02</div>
+                        <h3>Edit</h3>
+                        <p>I build the flow, add motion, and keep the visual rhythm tight.</p>
+                    </article>
+                    <article class="process-card fade-up" style="animation-delay: 0.15s;">
+                        <div class="process-step">03</div>
+                        <h3>Refine</h3>
+                        <p>We polish timing, transitions, and text until the cut feels right.</p>
+                    </article>
+                    <article class="process-card fade-up" style="animation-delay: 0.2s;">
+                        <div class="process-step">04</div>
+                        <h3>Deliver</h3>
+                        <p>Final export ready for reels, shorts, or social media publishing.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
 
-    <section class="section">
-      <div class="container">
-        <div class="section-title">
-          <div class="eyebrow"><i class="fa-solid fa-diagram-project"></i> Workflow</div>
-          <h2>Simple process, cleaner result</h2>
-          <p>A small added section to make the page feel fuller and more structured without becoming busy.</p>
-        </div>
+        <section id="portfolio" class="section">
+            <div class="container">
+                <div class="section-title">
+                    <div class="eyebrow"><i class="fa-solid fa-film"></i> Featured work</div>
+                    <h2>Selected showreels</h2>
+                    <p>Kept the showcase section, but tightened the layout so the videos sit inside a cleaner dark grid.
+                    </p>
+                </div>
 
-        <div class="process-grid">
-          <article class="process-card fade-up" style="animation-delay: 0.05s;">
-            <div class="process-step">01</div>
-            <h3>Brief</h3>
-            <p>We define the goal, tone, and pacing before the edit starts.</p>
-          </article>
-          <article class="process-card fade-up" style="animation-delay: 0.1s;">
-            <div class="process-step">02</div>
-            <h3>Edit</h3>
-            <p>I build the flow, add motion, and keep the visual rhythm tight.</p>
-          </article>
-          <article class="process-card fade-up" style="animation-delay: 0.15s;">
-            <div class="process-step">03</div>
-            <h3>Refine</h3>
-            <p>We polish timing, transitions, and text until the cut feels right.</p>
-          </article>
-          <article class="process-card fade-up" style="animation-delay: 0.2s;">
-            <div class="process-step">04</div>
-            <h3>Deliver</h3>
-            <p>Final export ready for reels, shorts, or social media publishing.</p>
-          </article>
-        </div>
-      </div>
-    </section>
+                <div class="portfolio-grid">
+                    <div class="portfolio-card"><iframe src="https://www.youtube.com/embed/ENmtezq81JA"
+                            title="YouTube Shorts Video 1" loading="lazy" allowfullscreen></iframe></div>
+                    <div class="portfolio-card"><iframe src="https://www.youtube.com/embed/jygkJmFok-A"
+                            title="YouTube Shorts Video 2" loading="lazy" allowfullscreen></iframe></div>
+                    <div class="portfolio-card"><iframe src="https://www.youtube.com/embed/jnYyh-HuLmw"
+                            title="YouTube Shorts Video 3" loading="lazy" allowfullscreen></iframe></div>
+                    <div class="portfolio-card"><iframe src="https://www.youtube.com/embed/7abjLZ1Cadg"
+                            title="YouTube Shorts Video 4" loading="lazy" allowfullscreen></iframe></div>
+                    <div class="portfolio-card"><iframe src="https://www.youtube.com/embed/rEPNWmJeXx0"
+                            title="YouTube Shorts Video 5" loading="lazy" allowfullscreen></iframe></div>
+                    <div class="portfolio-card"><iframe src="https://www.youtube.com/embed/HwBch-piwWo"
+                            title="YouTube Shorts Video 6" loading="lazy" allowfullscreen></iframe></div>
+                    <div class="portfolio-card"><iframe src="https://www.youtube.com/embed/1a-AqiBYqg0"
+                            title="YouTube Shorts Video 7" loading="lazy" allowfullscreen></iframe></div>
+                    <div class="portfolio-card"><iframe src="https://www.youtube.com/embed/dwpH-OVoKgs"
+                            title="YouTube Shorts Video 8" loading="lazy" allowfullscreen></iframe></div>
+                </div>
+            </div>
+        </section>
 
-    <section id="portfolio" class="section">
-      <div class="container">
-        <div class="section-title">
-          <div class="eyebrow"><i class="fa-solid fa-film"></i> Featured work</div>
-          <h2>Selected showreels</h2>
-          <p>Kept the showcase section, but tightened the layout so the videos sit inside a cleaner dark grid.</p>
-        </div>
+        <section id="testimonials" class="section">
+            <div class="container">
+                <div class="section-title">
+                    <div class="eyebrow"><i class="fa-solid fa-quote-left"></i> Reviews</div>
+                    <h2>What the edit should feel like</h2>
+                    <p>This new section adds more content and gives the portfolio a more complete, client-ready feel.
+                    </p>
+                </div>
 
-        <div class="portfolio-grid">
-          <div class="portfolio-card"><iframe src="https://www.youtube.com/embed/ENmtezq81JA"
-              title="YouTube Shorts Video 1" loading="lazy" allowfullscreen></iframe></div>
-          <div class="portfolio-card"><iframe src="https://www.youtube.com/embed/jygkJmFok-A"
-              title="YouTube Shorts Video 2" loading="lazy" allowfullscreen></iframe></div>
-          <div class="portfolio-card"><iframe src="https://www.youtube.com/embed/jnYyh-HuLmw"
-              title="YouTube Shorts Video 3" loading="lazy" allowfullscreen></iframe></div>
-          <div class="portfolio-card"><iframe src="https://www.youtube.com/embed/7abjLZ1Cadg"
-              title="YouTube Shorts Video 4" loading="lazy" allowfullscreen></iframe></div>
-          <div class="portfolio-card"><iframe src="https://www.youtube.com/embed/rEPNWmJeXx0"
-              title="YouTube Shorts Video 5" loading="lazy" allowfullscreen></iframe></div>
-          <div class="portfolio-card"><iframe src="https://www.youtube.com/embed/HwBch-piwWo"
-              title="YouTube Shorts Video 6" loading="lazy" allowfullscreen></iframe></div>
-          <div class="portfolio-card"><iframe src="https://www.youtube.com/embed/1a-AqiBYqg0"
-              title="YouTube Shorts Video 7" loading="lazy" allowfullscreen></iframe></div>
-          <div class="portfolio-card"><iframe src="https://www.youtube.com/embed/dwpH-OVoKgs"
-              title="YouTube Shorts Video 8" loading="lazy" allowfullscreen></iframe></div>
-        </div>
-      </div>
-    </section>
+                <div class="testimonial-grid">
+                    <article class="testimonial-card fade-up" style="animation-delay: 0.05s;">
+                        <div class="quote"><i class="fa-solid fa-quote-left"></i></div>
+                        <p>Sharp pacing, clean transitions, and a very polished finish. The style feels made for social
+                            media.</p>
+                        <div class="name">Fast & catchy</div>
+                        <div class="role">Short-form content that keeps attention</div>
+                    </article>
+                    <article class="testimonial-card fade-up" style="animation-delay: 0.1s;">
+                        <div class="quote"><i class="fa-solid fa-quote-left"></i></div>
+                        <p>The dark theme and accent color make the whole page feel more premium while still staying
+                            simple.</p>
+                        <div class="name">Modern & clean</div>
+                        <div class="role">A look that fits creators and brands</div>
+                    </article>
+                    <article class="testimonial-card fade-up" style="animation-delay: 0.15s;">
+                        <div class="quote"><i class="fa-solid fa-quote-left"></i></div>
+                        <p>The new sections make the site feel fuller, so visitors can understand the work and contact
+                            path faster.</p>
+                        <div class="name">More complete</div>
+                        <div class="role">Balanced structure and presentation</div>
+                    </article>
+                </div>
+            </div>
+        </section>
 
-    <section id="contact" class="section">
-      <div class="container contact-layout">
-        <div class="contact-copy fade-up" style="animation-delay: 0.05s;">
-          <div class="eyebrow"><i class="fa-solid fa-message"></i> Contact</div>
-          <h2>Let’s make something that stands out.</h2>
-          <p>
-            Ready for a cleaner reel, a stronger promo, or a more polished social edit? Send a message and I’ll get back
-            to you.
-          </p>
-          <div class="social-links">
-            <a href="https://www.facebook.com/josemariapaolomampusti" target="_blank" rel="noopener noreferrer"
-              aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://www.instagram.com/josemariapaolomampusti/" target="_blank" rel="noopener noreferrer"
-              aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.tiktok.com/@josemariapaolomampusti" target="_blank" rel="noopener noreferrer"
-              aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-            <a href="https://www.linkedin.com/in/jose-maria-paolo-mampusti-9b66bb379/" target="_blank"
-              rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-          </div>
-        </div>
+        <section class="section">
+            <div class="container">
+                <div class="cta-panel fade-up" style="animation-delay: 0.05s;">
+                    <div>
+                        <div class="eyebrow"><i class="fa-solid fa-bolt"></i> Next step</div>
+                        <h2>Need another section or a different vibe?</h2>
+                        <p>I can add a pricing section, FAQ, more portfolio cards, or make the whole page feel more
+                            luxury, bold, or minimal.</p>
+                    </div>
+                    <a href="#contact" class="btn btn-primary">Contact me</a>
+                </div>
+            </div>
+        </section>
 
-        <div class="contact-panel fade-up" style="animation-delay: 0.1s;">
-          <form id="contact-form" action="https://formspree.io/f/xpwylvyb" method="POST">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="email" placeholder="Your Email" required>
-            <textarea name="message" placeholder="Your Message" required></textarea>
-            <button type="submit" class="btn btn-primary" style="width: fit-content;">Send Message</button>
-          </form>
-          <p id="form-status" style="margin-top: 0.9rem; font-weight: 700;"></p>
-        </div>
-      </div>
-    </section>
-  </main>
+        <section id="contact" class="section">
+            <div class="container contact-layout">
+                <div class="contact-copy fade-up" style="animation-delay: 0.05s;">
+                    <div class="eyebrow"><i class="fa-solid fa-message"></i> Contact</div>
+                    <h2>Let’s make something that stands out.</h2>
+                    <p>
+                        Ready for a cleaner reel, a stronger promo, or a more polished social edit? Send a message and
+                        I’ll get back to you.
+                    </p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/josemariapaolomampusti" target="_blank"
+                            rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/josemariapaolomampusti/" target="_blank"
+                            rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com/@josemariapaolomampusti" target="_blank"
+                            rel="noopener noreferrer" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.linkedin.com/in/jose-maria-paolo-mampusti-9b66bb379/" target="_blank"
+                            rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
 
-  <footer>
-    <p>© 2025 Jose Maria Paolo Mampusti. All rights reserved.</p>
-  </footer>
+                <div class="contact-panel fade-up" style="animation-delay: 0.1s;">
+                    <form id="contact-form" action="https://formspree.io/f/xpwylvyb" method="POST">
+                        <input type="text" name="name" placeholder="Your Name" required>
+                        <input type="email" name="email" placeholder="Your Email" required>
+                        <textarea name="message" placeholder="Your Message" required></textarea>
+                        <button type="submit" class="btn btn-primary" style="width: fit-content;">Send Message</button>
+                    </form>
+                    <p id="form-status" style="margin-top: 0.9rem; font-weight: 700;"></p>
+                </div>
+            </div>
+        </section>
+    </main>
 
-  <script>
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.getElementById('navLinks');
-    const form = document.getElementById('contact-form');
-    const status = document.getElementById('form-status');
+    <footer>
+        <p>© 2025 Jose Maria Paolo Mampusti. All rights reserved.</p>
+    </footer>
 
-    hamburger.addEventListener('click', () => {
-      const isOpen = navLinks.classList.toggle('active');
-      hamburger.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', String(isOpen));
-    });
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        const form = document.getElementById('contact-form');
+        const status = document.getElementById('form-status');
 
-    navLinks.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
-        hamburger.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', 'false');
-      });
-    });
-
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const data = new FormData(form);
-
-      try {
-        const response = await fetch(form.action, {
-          method: form.method,
-          body: data,
-          headers: { Accept: 'application/json' }
+        hamburger.addEventListener('click', () => {
+            const isOpen = navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', String(isOpen));
         });
 
-        if (response.ok) {
-          status.textContent = 'Message sent successfully!';
-          status.style.color = '#7dff9d';
-          form.reset();
-        } else {
-          status.textContent = 'Something went wrong. Please try again.';
-          status.style.color = '#ff8a7a';
-        }
-      } catch (error) {
-        status.textContent = 'Network error. Please try again.';
-        status.style.color = '#ffc177';
-      }
-    });
-  </script>
-</body>
+        navLinks.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                hamburger.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            });
+        });
 
-</html>
-</footer>
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const data = new FormData(form);
 
-<script>
-  const hamburger = document.getElementById('hamburger');
-  const navLinks = document.getElementById('navLinks');
+            try {
+                const response = await fetch(form.action, {
+                    method: form.method,
+                    body: data,
+                    headers: { Accept: 'application/json' }
+                });
 
-  // 👉 Toggle menu open/close (slide from right)
-  hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-    hamburger.classList.toggle('active'); // para sa hamburger animation
-  });
-</script>
-
-
-
+                if (response.ok) {
+                    status.textContent = 'Message sent successfully!';
+                    status.style.color = '#7dff9d';
+                    form.reset();
+                } else {
+                    status.textContent = 'Something went wrong. Please try again.';
+                    status.style.color = '#ff8a7a';
+                }
+            } catch (error) {
+                status.textContent = 'Network error. Please try again.';
+                status.style.color = '#ffc177';
+            }
+        });
+    </script>
 </body>
 
 </html>
