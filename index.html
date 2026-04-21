@@ -702,6 +702,79 @@
                 width: 100%;
             }
         }
+
+        @media (max-width: 480px) {
+            .container {
+                width: min(1180px, calc(100% - 1rem));
+            }
+
+            .section {
+                padding: 4rem 0;
+            }
+
+            .hero {
+                padding: 6.2rem 0 3.5rem;
+            }
+
+            .hero-card,
+            .service-card,
+            .process-card,
+            .about-panel,
+            .portfolio-card,
+            .contact-panel,
+            .testimonial-card,
+            .cta-panel {
+                border-radius: 20px;
+            }
+
+            .hero-card,
+            .about-panel,
+            .contact-panel,
+            .cta-panel,
+            .service-card,
+            .process-card,
+            .testimonial-card {
+                padding: 1rem;
+            }
+
+            .hero-image {
+                aspect-ratio: 1 / 1.05;
+            }
+
+            .portfolio-card {
+                min-height: 300px;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .logo span {
+                font-size: 0.92rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .logo {
+                gap: 0.6rem;
+            }
+
+            .logo img {
+                width: 36px;
+                height: 36px;
+            }
+
+            .hero-copy h1 {
+                font-size: 2rem;
+            }
+
+            .hero-copy p,
+            .section-title p,
+            .contact-copy p,
+            .cta-panel p {
+                font-size: 0.95rem;
+            }
+        }
     </style>
 </head>
 
